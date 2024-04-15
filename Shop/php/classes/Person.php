@@ -8,7 +8,7 @@ class Person {
   private $mother;
   private $father;
 
-  function __construct($name, $lastname, $age, $mother=null, $father=null)
+  function __construct($name, $lastname, $age, $mother, $father)
   {
     $this->name = $name;
     $this->lastname = $lastname;
@@ -32,6 +32,12 @@ class Person {
   function getName() {
     return $this->name;
   }
+  function getLastName() {
+    return $this->lastname;
+  }
+  function getAge() {
+    return $this->age;
+  }
   function getMother() {
     return $this->mother;
   }
@@ -40,19 +46,31 @@ class Person {
   }
   function getInfo() {
     return "
-      <h2>Несколько слов о моих родственниках: </h2><br>" . "Меня зовут - " . $this->getName() . "<br> Моя фамилия - ";
+      <h2>Несколько слов о моих родственниках: </h2><br>" . "Меня зовут - " . $this->getName() . 
+      "<br> Моя фамилия - " . $this->getLastName() . 
+      "<br> Мне " . $this->getAge() . " лет" . 
+      "<br> Мои родственники: " . 
+      "<br>Мама - " . $this->getMother()->getName() . " " . $this->getMother()->getLastName() . " " . $this->getMother()->getAge() . " лет" . 
+      "<br>Папа - " . $this->getFather()->getName() . " " . $this->getFather()->getLastName() . " " . $this->getFather()->getAge() . " лет" . 
+      "<br>Бабушка по маминой линии - " . $this->getMother()->getMother()->getName() . " " . $this->getMother()->getMother()->getLastName() . " " . $this->getMother()->getMother()->getAge() . " лет" . 
+      "<br>Дедушка по маминой линии - " . $this->getMother()->getFather()->getName() . " " . $this->getMother()->getFather()->getLastName() . " " . $this->getMother()->getFather()->getAge() . " лет" . 
+      "<br>Бабушка по папиной линии - " . $this->getFather()->getMother()->getName() . " " . $this->getFather()->getMother()->getLastName() . " " . $this->getFather()->getMother()->getAge() . " лет" . 
+      "<br>Дедушка по папиной линии - " . $this->getFather()->getFather()->getName() . " " . $this->getFather()->getFather()->getLastName() . " " . $this->getFather()->getFather()->getAge() . " лет";
   }
 }
 
-$igor = new Person("Igor", "Petrov", 68);
+$igor = new Person("Igor", "Petrov", 68, null, null); // Дедушка по маминой линии
+$elena = new Person("Elena", "Petrova", 60, null, null); // Бабушка по маминой линии
+
+$dima = new Person("Dmitri", "Ivanov", 72, null, null); // Дедушка по папиной линии
+$alena = new Person("Alena", "Ivanova", 69, null, null); // Бабушка по папиной линии
 
 
+$alex = new Person("Alex", "Ivanov", 32, $alena, $dima); // Отец
+$olga = new Person("Olga", "Ivanova", 30, $elena, $igor); // Мама
+$andrey = new Person("Andrey", "Ivanov", 10, $olga, $alex); //Сын
 
-$alex = new Person("Alex", "Ivanov", 32);
-$olga = new Person("Olga", "Ivanova", 30, null, $igor);
-$andrey = new Person("Andrey", "Ivanov", 10, $olga, $alex);
-
-echo $andrey->getMother()->getFather()->getName();
+echo $andrey->getInfo();
 
 
 
